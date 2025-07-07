@@ -80,7 +80,7 @@ class CourseContentService {
             .get();
 
         final videos = videoSnap.docs
-            .map((v) => VideoModel.fromMap(v.data(), v.id))
+            .map((v) => VideoModel.fromjson(v.id,v.data()))
             .toList();
 
         sections.add(

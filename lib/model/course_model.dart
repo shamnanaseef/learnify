@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:learneasy/model/course_section_model.dart';
 
 class Course {
    final String id;
@@ -8,8 +9,10 @@ class Course {
   final String category;
   final double price;
   final String contentUrl;
+   final String? image;
+    
 
-  Course({ this.id = '',required this.instructorId, required this.title, required this.discription, required this.category, required this.price, required this.contentUrl});
+  Course( { this.id = '',required this.instructorId, required this.title, required this.discription, required this.category, required this.price, required this.contentUrl,this.image, });
 
   factory Course.fromjson(DocumentSnapshot doc){
     final data =doc.data() as Map<String, dynamic>;
@@ -20,7 +23,10 @@ class Course {
       discription: data['discription'],
       category: data['category'], 
       price: data['price'],
-      contentUrl: data['contentUrl']
+      contentUrl: data['contentUrl'],
+      image: data['image'],
+     
+      
       );
   }
 
@@ -33,6 +39,8 @@ class Course {
       'category':category,
       'price':price,
       'contentUrl':contentUrl,
+      'image':image,
+      
     };
   }
   

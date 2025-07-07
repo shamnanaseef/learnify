@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../model/course_model.dart';
@@ -18,6 +19,18 @@ final instructorCoursesProvider = FutureProvider<List<Course>>((ref) async {
   if (user == null) return [];
   return ref.read(courseServiceProvider).getCoursesByInstructor(user.uid);
 });
+
+// all course fetch
+
+final allCoursesProvider = StreamProvider<List<Course>>((ref) {
+  return FirebaseFirestore.instance
+      .collection('courses')
+      .snapshots()
+      .map((snapshot) {
+    return snapshot.docs.map((doc) => Course.fromjson(doc)).toList();
+  });
+});
+
 
 
 class CourseController {

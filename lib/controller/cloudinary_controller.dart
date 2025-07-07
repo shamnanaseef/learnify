@@ -12,6 +12,15 @@ final videoUploadControllerProvider = Provider((ref) {
   return VideoUploadController(ref, service);
 });
 
+// image add
+final imageUrlProvider = StateProvider<String?>((ref) => null);
+
+final imageUploadControllerProvider = Provider((ref) {
+  final service = ref.read(cloudinaryServiceProvider);
+  return ImageUploadController(ref, service);
+});
+
+
 // course content 
 final courseContentServiceProvider = Provider((ref) {
   final cloudinaryService = ref.read(cloudinaryServiceProvider);
@@ -33,3 +42,18 @@ class VideoUploadController {
 
   
 }
+
+class ImageUploadController {
+  final Ref ref;
+  final CloudinaryService service;
+
+  ImageUploadController(this.ref, this.service);
+
+  Future<void> uploadImage(File imageFile) async {
+    final url = await service.uploadImage(imageFile);
+    if (url != null) {
+      ref.read(imageUrlProvider.notifier).state = url;
+    }
+  }
+}
+

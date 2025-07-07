@@ -127,6 +127,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                    
                     controller: passController, 
                     validator: (value) => AppValidator.validatePassword(value),
+                    obscureText: true,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock,color: AppColors.authColor,),
                       labelText: "Password",
@@ -143,6 +144,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                    
                     controller: cPassController, 
                     validator:(value) => AppValidator.confirmPassValidate(value, passController.text),
+                    obscureText: true,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock,color: AppColors.authColor,),
                       labelText: "Confirm Password",

@@ -13,17 +13,21 @@ class VideoModel {
     required this.order,
   });
 
-  factory VideoModel.fromMap(Map<String, dynamic> map, String id) {
+  
+
+  factory VideoModel.fromjson(String id,Map<String, dynamic> json) {
+    
     return VideoModel(
+
       id: id,
-      title: map['title'],
-      videoUrl: map['videoUrl'],
-      duration: map['duration'],
-      order: map['order'],
+      title: json['title'] ?? 'untitled vedio',
+      videoUrl: json['videoUrl'] ?? '',
+      duration: json['duration'] ?? '0:00',
+      order: json['order'] ?? 0,
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> tojson() {
     return {
       'title': title,
       'videoUrl': videoUrl,
