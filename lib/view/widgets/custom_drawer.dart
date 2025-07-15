@@ -11,6 +11,7 @@ class AppDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profileAsync = ref.watch(userProfileProvider);
+   
 
     return Drawer(
       shadowColor:Colors.amber ,
@@ -67,6 +68,7 @@ class AppDrawer extends ConsumerWidget {
                 leading: Icon(Icons.logout,color: AppColors.iconColor),
                 title: const Text('Logout'),
                 onTap: () async {
+               // ref.read(authControllerProvider.notifier).logout();
                   await FirebaseAuth.instance.signOut();
                  Navigator.pushReplacement( context,MaterialPageRoute(builder: (_) => LoginPage()),
 );

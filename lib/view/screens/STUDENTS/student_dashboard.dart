@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:learneasy/controller/cart_controller.dart';
 import 'package:learneasy/utils/constants/colors.dart';
+import 'package:learneasy/view/screens/STUDENTS/student_cartpage.dart';
 import 'package:learneasy/view/screens/STUDENTS/student_coursepage.dart';
 import 'package:learneasy/view/screens/STUDENTS/student_homepage.dart';
-import 'package:learneasy/view/screens/STUDENTS/student_searchbar.dart';
-import 'package:learneasy/view/screens/STUDENTS/student_wishlist.dart';
+import 'package:learneasy/view/screens/STUDENTS/student_profile.dart';
+
 
 class StudentDashboard extends StatefulWidget {
   const StudentDashboard({super.key});
@@ -19,7 +22,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
   final List<Widget> _screens = const [
     StudentHomepage(),
     StudentCoursepage(),
-    StudentWishlist(),
+    StudentCartpage(),
     StudentSearchbar(),
   ];
 
@@ -31,19 +34,31 @@ class _StudentDashboardState extends State<StudentDashboard> {
         padding: const EdgeInsets.all(12.0), // space from edges
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24), // 🎯 rounded corners
-          child: BottomNavigationBar(
-            backgroundColor: AppColors.buttonColor,
-            currentIndex: _currentIndex,
-            selectedItemColor: const Color(0xFFFFAB91),
-            unselectedItemColor: Colors.white70,
-            onTap: (index) => setState(() => _currentIndex = index),
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Courses'),
-              BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Analytics'),
-              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-            ],
+          child: Consumer(
+            builder: (context, ref, _) {
+    final cartCount = ref.watch(cartCountProvider);
+    return BottomNavigationBar(
+              backgroundColor: AppColors.buttonColor,
+              currentIndex: _currentIndex,
+              selectedItemColor: const Color(0xFFFFAB91),
+              unselectedItemColor: Colors.white70,
+              onTap: (index) => setState(() => _currentIndex = index),
+              type: BottomNavigationBarType.fixed,
+              items: [
+                const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                const BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'My Courses'),
+                BottomNavigationBarItem(icon: cartCount.when(
+            data: (count) =>Badge.count(
+              count: count,
+              child: Icon(Icons.shopping_cart),
+            ),
+            loading: () => Icon(Icons.shopping_cart),
+            error: (e, _) => Icon(Icons.error),
+          ), label: 'Cart'),
+                const BottomNavigationBarItem(icon: Icon(Icons.person,), label: 'Profile'),
+              ],
+            );
+            }
           ),
         ),
       ),
