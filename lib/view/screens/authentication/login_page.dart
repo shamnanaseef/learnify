@@ -87,6 +87,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   TextFormField(
                    
                     controller: passController, 
+                    obscureText: true,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock,color: AppColors.authColor,),
                       labelText: "Password",

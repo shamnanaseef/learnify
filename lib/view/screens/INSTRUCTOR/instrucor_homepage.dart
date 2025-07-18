@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:learneasy/controller/course_controller.dart';
 import 'package:learneasy/utils/constants/colors.dart';
 
 import 'package:learneasy/view/widgets/custom_appbar.dart';
 import 'package:learneasy/view/widgets/custom_drawer.dart';
+import 'package:learneasy/view/widgets/custom_slider.dart';
 
-class InstructorHomepage extends StatelessWidget {
+class InstructorHomepage extends ConsumerWidget {
   const InstructorHomepage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context ,WidgetRef ref) {
     final scaffoldKey = GlobalKey<ScaffoldState>();
+    
+    final coursesAsync = ref.watch(instructorCoursesProvider);
+
     return Scaffold(
       key: scaffoldKey,
       drawer: const AppDrawer(),
@@ -24,6 +30,9 @@ class InstructorHomepage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Summary Cards
+            
+  CustomSlider(),
+              SizedBox(height: 12,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
@@ -54,33 +63,50 @@ class InstructorHomepage extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Dummy list
-            ListView.builder(
-              itemCount: 3,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 2,
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.video_library,
-                      color: AppColors.iconColor,
-                    ),
-                    title: Text("Course ${index + 1}"),
-                    subtitle: const Text("20 Lessons • 3.5 hrs"),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: AppColors.iconColor,
-                    ),
-                    onTap: () {
-                      // TODO: Course detail page
-                    },
-                  ),
+           coursesAsync.when(
+              data: (courses) {
+                if (courses.isEmpty) {
+                  return const Text("No courses yet.");
+                }
+                return ListView.builder(
+                  itemCount: courses.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final course = courses[index];
+                    return Card(
+                      elevation: 2,
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: ListTile(
+                        // leading: course.image != null
+                        //     ? ClipRRect(
+                        //         borderRadius: BorderRadius.circular(8),
+                        //         child: Image.network(
+                        //           course.image!,
+                        //           width: 50,
+                        //           height: 50,
+                        //           fit: BoxFit.cover,
+                        //         ),
+                        //       )
+                          //  : Icon(Icons.video_library, color: AppColors.iconColor),
+                        title: Text(course.title,style: TextStyle(fontWeight: FontWeight.bold),),
+                        subtitle: Text("₹${course.price.toString()} - ${course.category}"),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: AppColors.iconColor,
+                        ),
+                        onTap: () {
+                          // TODO: Navigate to course detail page
+                        },
+                      ),
+                    );
+                  },
                 );
               },
-            ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (err, stack) => Text('Error: $err'),
+           ),
           ],
         ),
       ),

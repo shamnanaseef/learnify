@@ -1,3 +1,5 @@
+
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learneasy/services/cart_services.dart';
 
@@ -14,3 +16,4 @@ final cartCountProvider = FutureProvider<int>((ref) async {
   final items = await ref.read(cartLocalServiceProvider).getCartItems();
   return items.length;
 });
+

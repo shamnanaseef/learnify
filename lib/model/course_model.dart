@@ -14,7 +14,7 @@ class Course {
 
   Course( { this.id = '',required this.instructorId, required this.title, required this.discription, required this.category, required this.price, required this.contentUrl,this.image, });
 
-  factory Course.fromjson(DocumentSnapshot doc){
+  factory Course.fromjson(DocumentSnapshot doc,){
     final data =doc.data() as Map<String, dynamic>;
     return Course(
       id: doc.id,

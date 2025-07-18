@@ -75,7 +75,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
   Widget build(BuildContext context) {
     final course = widget.course;
     final sectionsAsync = ref.watch(courseSectionsProvider(course.id));
-    print("Video JSON: ${json}");
+    //print("Video JSON: ${json}");
 
     return Scaffold(
       appBar: AppBar(
@@ -193,19 +193,29 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await ref
-                          .read(cartLocalServiceProvider)
-                          .addToCart(course.id);
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text('Added to cart')));
-
-                      // Optionally refresh the cart items list
-                      ref.refresh(localCartItemsProvider);
-                    },
-                    child: Text('Add to Cart'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await ref
+                            .read(cartLocalServiceProvider)
+                            .addToCart(course.id);
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text('Added to cart')));
+                    
+                        // Optionally refresh the cart items list
+                        ref.refresh(localCartItemsProvider);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.buttonColor,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text('Add to Cart' ,style: TextStyle(fontSize: 16, color: Colors.white),),
+                    ),
                   ),
 
                   const SizedBox(height: 30),
@@ -241,8 +251,8 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                                     ),
                                     title: Text(video.title),
                                     subtitle: Text(video.duration),
-                                    onTap:
-                                        () => _playSectionVideo(video.videoUrl),
+                                    onTap:(){}
+                                        // () => _playSectionVideo(video.videoUrl),
                                   );
                                 }).toList(),
                           );

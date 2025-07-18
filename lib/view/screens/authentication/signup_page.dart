@@ -143,6 +143,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   TextFormField(
                    
                     controller: cPassController, 
+                    
                     validator:(value) => AppValidator.confirmPassValidate(value, passController.text),
                     obscureText: true,
                     decoration: InputDecoration(

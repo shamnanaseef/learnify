@@ -15,11 +15,11 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboard extends State<AdminDashboard> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
+  final List<Widget> _screens = [
     AdminHomepage(),
-  UserControll(),
-   CourseControll(),
-   Settings()
+  const UserControll(),
+   const CourseControl(),
+   const Settings()
   ];
 
   @override
@@ -39,9 +39,9 @@ class _AdminDashboard extends State<AdminDashboard> {
             type: BottomNavigationBarType.fixed,
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'),
               BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Courses'),
               BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Analytics'),
-              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
             ],
           ),
         ),

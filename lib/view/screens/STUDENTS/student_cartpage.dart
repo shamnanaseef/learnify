@@ -96,7 +96,7 @@ Widget build(BuildContext context,WidgetRef ref) {
                                     width: MediaQuery.of(context).size.width*0.40,
                                     child: ElevatedButton(onPressed: ()async{
                                       await ref.read(cartLocalServiceProvider).removeFromCart(course.id);
-                                       ref.refresh(localCartItemsProvider); //
+                                      // ref.refresh(localCartItemsProvider); //
                                     }, child: Text("Remove"),
                                                                       ),
                                                                       ),
